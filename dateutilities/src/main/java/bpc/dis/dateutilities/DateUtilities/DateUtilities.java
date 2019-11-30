@@ -1,0 +1,98 @@
+package bpc.dis.dateutilities.DateUtilities;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+public class DateUtilities {
+
+    public static Date addDays(Date date, int days) {
+        return new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
+    }
+
+    public static String getPersianDate(Date date, String separator) {
+        PersianDate persianDate = new PersianDate(date);
+        StringBuilder dateFormat = new StringBuilder();
+        dateFormat.append(persianDate.getShYear());
+        dateFormat.append(separator);
+        String month = String.valueOf(persianDate.getShMonth());
+        if (month.length() == 1) {
+            month = "0" + month;
+        }
+        dateFormat.append(month);
+        dateFormat.append(separator);
+        String day = String.valueOf(persianDate.getShDay());
+        if (day.length() == 1) {
+            day = "0" + day;
+        }
+        dateFormat.append(day);
+        return dateFormat.toString();
+    }
+
+    public static String getPersianDate(String date, String separator) {
+        return date.substring(0, 4) +
+                separator +
+                date.substring(4, 6) +
+                separator +
+                date.substring(6, 8);
+    }
+
+    public static String getGeorgianDate(Date date, String separator) {
+        StringBuilder dateFormat = new StringBuilder();
+        dateFormat.append(date.getYear() + 1900);
+        dateFormat.append(separator);
+        String month = String.valueOf(date.getMonth() + 1);
+        if (month.length() == 1) {
+            month = "0" + month;
+        }
+        dateFormat.append(month);
+        dateFormat.append(separator);
+        String day = String.valueOf(date.getDay());
+        if (day.length() == 1) {
+            day = "0" + day;
+        }
+        dateFormat.append(day);
+        return dateFormat.toString();
+    }
+
+    static String getGeorgianDateTime(Date date, String dateSeparator, String hourSeparator, boolean separateDateAndTime) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        StringBuilder dateFormat = new StringBuilder();
+        dateFormat.append(calendar.get(Calendar.YEAR));
+        dateFormat.append(dateSeparator);
+        String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+        if (month.length() == 1) {
+            month = "0" + month;
+        }
+        dateFormat.append(month);
+        dateFormat.append(dateSeparator);
+        String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        if (day.length() == 1) {
+            day = "0" + day;
+        }
+        dateFormat.append(day);
+        if (separateDateAndTime) {
+            dateFormat.append(" ");
+        }
+        String hour = String.valueOf(date.getHours());
+        if (hour.length() == 1) {
+            hour = "0" + hour;
+        }
+        dateFormat.append(hour);
+        dateFormat.append(hourSeparator);
+        String min = String.valueOf(date.getMinutes());
+        if (min.length() == 1) {
+            min = "0" + min;
+        }
+        dateFormat.append(min);
+        dateFormat.append(hourSeparator);
+        String sec = String.valueOf(date.getSeconds());
+        if (sec.length() == 1) {
+            sec = "0" + sec;
+        }
+        dateFormat.append(sec);
+        return dateFormat.toString();
+    }
+
+}
