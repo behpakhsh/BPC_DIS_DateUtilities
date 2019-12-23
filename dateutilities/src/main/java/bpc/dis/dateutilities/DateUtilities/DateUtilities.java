@@ -55,7 +55,7 @@ public class DateUtilities {
         return dateFormat.toString();
     }
 
-    static String getGeorgianDateTime(Date date, String dateSeparator, String hourSeparator, boolean separateDateAndTime) {
+    public static String getGeorgianDateTime(Date date, String dateSeparator, String hourSeparator, boolean separateDateAndTime) {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         StringBuilder dateFormat = new StringBuilder();
@@ -93,6 +93,11 @@ public class DateUtilities {
         }
         dateFormat.append(sec);
         return dateFormat.toString();
+    }
+
+    public static int getDayBetweenDate(Date oldDate, Date currentDate) {
+        long diff = currentDate.getTime() - oldDate.getTime();
+        return (int) (diff / (1000 * 60 * 60 * 24));
     }
 
 }
