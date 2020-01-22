@@ -14,6 +14,7 @@ public class PersianCalendarKernel {
 
     private SolarCalendar startSolarCalendar;
     private SolarCalendar endSolarCalendar;
+    private List<String> defaultMonths;
     private List<String> years;
     private List<String> months;
     private List<String> days;
@@ -25,15 +26,18 @@ public class PersianCalendarKernel {
             days = new ArrayList<>();
             return;
         }
+
+        defaultMonths = Arrays.asList(context.getResources().getStringArray(R.array.month)).subList(0, 12);
+
         startSolarCalendar = new SolarCalendar(startDate);
         endSolarCalendar = new SolarCalendar(endDate);
 
-        initYears(startDate, endDate);
-        initMonths(context, startDate, endDate);
-        initDays(startDate, endDate);
+        initYears();
+        initMonths();
+        initDays();
     }
 
-    private void initYears(Date startDate, Date endDate) {
+    private void initYears() {
         int startYear = startSolarCalendar.year;
         int endYear = endSolarCalendar.year;
         years = new ArrayList<>();
@@ -42,19 +46,19 @@ public class PersianCalendarKernel {
         }
     }
 
-    private void initMonths(Context context, Date startDate, Date endDate) {
+    private void initMonths() {
         int end = 12;
         int startYear = startSolarCalendar.year;
         int startMonth = startSolarCalendar.month;
         int endYear = endSolarCalendar.year;
         if (startYear == endYear) {
-            end = endSolarCalendar.day;
+            end = endSolarCalendar.month;
         }
         months = new ArrayList<>();
-        months.addAll(Arrays.asList(context.getResources().getStringArray(R.array.month)).subList(startMonth - 1, end));
+        months.addAll(defaultMonths.subList(startMonth - 1, end));
     }
 
-    private void initDays(Date startDate, Date endDate) {
+    private void initDays() {
         int endDay = 31;
         int startYear = startSolarCalendar.year;
         int startMonth = startSolarCalendar.month;
@@ -79,28 +83,83 @@ public class PersianCalendarKernel {
         }
     }
 
-    public List<String> getYears() {
-        return years;
+
+    public List<String> getMonthsByYear(int year) {
+        int startYear = startSolarCalendar.year;
+        int endYear = endSolarCalendar.year;
+        if (year > startYear && year < endYear) {
+            return defaultMonths.subList(0, 12);
+        }
+        if (year == startYear) {
+            return defaultMonths.subList(startSolarCalendar.month - 1, 12);
+        }
+        if (year == endYear) {
+            return defaultMonths.subList(0, endSolarCalendar.month - 1);
+        }
+        return new ArrayList<>();
     }
 
-    public void setYears(List<String> years) {
-        this.years = years;
+    public List<String> getDaysByMonth(int year, String stringMonth) {
+        int month = 1;
+        for (int i = 0; i < defaultMonths.size(); i++) {
+            if (defaultMonths.get(i).equals(stringMonth)) {
+                month = i + 1;
+                break;
+            }
+        }
+        List<String> days = new ArrayList<>();
+        int startYear = startSolarCalendar.year;
+        int endYear = endSolarCalendar.year;
+        int start;
+        int end;
+        if (startYear == endYear) {
+            start = startSolarCalendar.day;
+            end = 31;
+        } else if (year == startYear) {
+            start = 1;
+            end = 31;
+            int startMonth = startSolarCalendar.month;
+            if (month == startMonth) {
+                start = startSolarCalendar.day;
+            }
+        } else if (year == endYear) {
+            start = 1;
+            end = 31;
+            int endMonth = endSolarCalendar.month;
+            if (month == endMonth) {
+                end = endSolarCalendar.day;
+            }
+        } else {
+            start = 1;
+            end = 31;
+        }
+        if (month > 6) {
+            if (!LeapYearHelper.checkLeapYear(year)) {
+                if (month == 12)
+                    end = 29;
+                else
+                    end = 30;
+            } else {
+                end = 30;
+            }
+        }
+        for (int i = start; i <= end; i++) {
+            days.add(String.valueOf(i));
+        }
+        return days;
+    }
+
+
+    public List<String> getYears() {
+        return years;
     }
 
     public List<String> getMonths() {
         return months;
     }
 
-    public void setMonths(List<String> months) {
-        this.months = months;
-    }
-
     public List<String> getDays() {
         return days;
-    }
-
-    public void setDays(List<String> days) {
-        this.days = days;
     }
 
 }
