@@ -84,6 +84,15 @@ public class PersianCalendarKernel {
     }
 
 
+    public int getMonthsNumberByMonthString(String monthString) {
+        for (int i = 0; i < defaultMonths.size(); i++) {
+            if (monthString.equals(defaultMonths.get(i))) {
+                return i + 1;
+            }
+        }
+        return 0;
+    }
+
     public List<String> getMonthsByYear(int year) {
         int startYear = startSolarCalendar.year;
         int endYear = endSolarCalendar.year;
