@@ -1,5 +1,9 @@
 package bpc.dis.dateutilities.DateUtilities;
 
+import android.annotation.SuppressLint;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -98,6 +102,22 @@ public class DateUtilities {
     public static int getDayBetweenDate(Date oldDate, Date currentDate) {
         long diff = currentDate.getTime() - oldDate.getTime();
         return (int) (diff / (1000 * 60 * 60 * 24));
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public Date stringToDate(String dateString, String dateFormatter) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormatter);
+        try {
+            return simpleDateFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public String dateToString(Date date, String dateFormatter) {
+        return new SimpleDateFormat(dateFormatter).format(date);
     }
 
 }
