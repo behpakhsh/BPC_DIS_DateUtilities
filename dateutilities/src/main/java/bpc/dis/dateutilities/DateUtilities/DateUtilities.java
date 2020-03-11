@@ -14,6 +14,10 @@ public class DateUtilities {
         return new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
     }
 
+    public static Date addHours(Date date, int hours) {
+        return new Date(date.getTime() + hours * 60 * 60 * 1000);
+    }
+
     public static String getPersianDate(Date date, String separator) {
         PersianDate persianDate = new PersianDate(date);
         StringBuilder dateFormat = new StringBuilder();
