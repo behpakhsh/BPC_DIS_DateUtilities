@@ -14,6 +14,20 @@ public class DateUtilities {
         return new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
     }
 
+    public static Date addDaysStable(Date date, int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, days);
+        return calendar.getTime();
+    }
+
+    public static Date addHoursStable(Date date, int hours) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR, hours);
+        return calendar.getTime();
+    }
+
     public static Date addHours(Date date, int hours) {
         return new Date(date.getTime() + hours * 60 * 60 * 1000);
     }
