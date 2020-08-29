@@ -32,6 +32,35 @@ public class DateUtilities {
         return new Date(date.getTime() + hours * 60 * 60 * 1000);
     }
 
+    public static Date getGeorgianDate(String stringDate, String separator) {
+        if (separator != null && !separator.isEmpty()) {
+            PersianDate persianDate = new PersianDate();
+            String[] stringValues = stringDate.split(separator);
+            int[] values = persianDate.toGregorian(
+                    Integer.parseInt(stringValues[0]),
+                    Integer.parseInt(stringValues[1]),
+                    Integer.parseInt(stringValues[2])
+            );
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, values[0]);
+            calendar.set(Calendar.MONTH, values[1]);
+            calendar.set(Calendar.DAY_OF_MONTH, values[2]);
+            return calendar.getTime();
+        } else {
+            PersianDate persianDate = new PersianDate();
+            int[] values = persianDate.toGregorian(
+                    Integer.parseInt(stringDate.substring(0, 4)),
+                    Integer.parseInt(stringDate.substring(4, 6)),
+                    Integer.parseInt(stringDate.substring(6, 8))
+            );
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, values[0]);
+            calendar.set(Calendar.MONTH, values[1]);
+            calendar.set(Calendar.DAY_OF_MONTH, values[2]);
+            return calendar.getTime();
+        }
+    }
+
     public static String getPersianDate(Date date, String separator) {
         PersianDate persianDate = new PersianDate(date);
         StringBuilder dateFormat = new StringBuilder();
